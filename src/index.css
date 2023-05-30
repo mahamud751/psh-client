@@ -24,7 +24,13 @@ h1 {
   line-height: 1.1;
 }
 
+.text_c_color {
+  color: #35B0A7;
+}
 
+hr {
+  height: 1px;
+}
 
 button:hover {
   border-color: #646cff;

@@ -27,27 +27,33 @@ import {
   RocketLaunchIcon,
   Bars2Icon,
 } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 
 const profileMenuItems = [
   {
     label: "My Profile",
     icon: UserCircleIcon,
+    href: "/profile",
   },
   {
     label: "Edit Profile",
     icon: Cog6ToothIcon,
+    href: "#",
   },
   {
     label: "Inbox",
     icon: InboxArrowDownIcon,
+    href: "#",
   },
   {
     label: "Help",
     icon: LifebuoyIcon,
+    href: "#",
   },
   {
     label: "Sign Out",
     icon: PowerIcon,
+    href: "#",
   },
 ];
 
@@ -79,33 +85,16 @@ function ProfileMenu() {
         </Button>
       </MenuHandler>
       <MenuList className="p-1">
-        {profileMenuItems.map(({ label, icon }, key) => {
-          const isLastItem = key === profileMenuItems.length - 1;
-          return (
-            <MenuItem
-              key={label}
-              onClick={closeMenu}
-              className={`flex items-center gap-2 rounded ${
-                isLastItem
-                  ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
-                  : ""
-              }`}
-            >
-              {React.createElement(icon, {
-                className: `h-4 w-4 ${isLastItem ? "text-red-500" : ""}`,
-                strokeWidth: 2,
-              })}
-              <Typography
-                as="span"
-                variant="small"
-                className="font-normal"
-                color={isLastItem ? "red" : "inherit"}
-              >
-                {label}
-              </Typography>
-            </MenuItem>
-          );
-        })}
+        <Link to={"/profile"}>
+          <MenuItem
+            onClick={closeMenu}
+            className={`flex items-center gap-2 rounded `}
+          >
+            <Typography as="span" variant="small" className="font-normal">
+              Profile
+            </Typography>
+          </MenuItem>
+        </Link>
       </MenuList>
     </Menu>
   );
@@ -194,17 +183,31 @@ function NavListMenu() {
     </React.Fragment>
   );
 }
+
 const navListItems = [
   {
-    label: "Account",
+    label: "Lease Your Property",
     icon: UserCircleIcon,
+    href: "/",
   },
   {
-    label: "Blocks",
+    label: "Popular Area",
     icon: CubeTransparentIcon,
   },
   {
-    label: "Docs",
+    label: "About us",
+    icon: CodeBracketSquareIcon,
+  },
+  {
+    label: "Contact us",
+    icon: CodeBracketSquareIcon,
+  },
+  {
+    label: "PSH for Business",
+    icon: CodeBracketSquareIcon,
+  },
+  {
+    label: "Promo",
     icon: CodeBracketSquareIcon,
   },
 ];
@@ -251,9 +254,9 @@ export default function Navmenu() {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center">
-          Pages
-        </a>
+        <Link to={"/"} className="flex items-center">
+          Lease Your Property
+        </Link>
       </Typography>
       <Typography
         as="li"
@@ -261,9 +264,9 @@ export default function Navmenu() {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center">
-          Account
-        </a>
+        <Link to={"/"} className="flex items-center">
+          Popular Area
+        </Link>
       </Typography>
       <Typography
         as="li"
@@ -271,9 +274,9 @@ export default function Navmenu() {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center">
-          Blocks
-        </a>
+        <Link to={"/about"} className="flex items-center">
+          About us
+        </Link>
       </Typography>
       <Typography
         as="li"
@@ -281,9 +284,29 @@ export default function Navmenu() {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center">
-          Docs
-        </a>
+        <Link to={"/contact"} className="flex items-center">
+          Contact
+        </Link>
+      </Typography>
+      <Typography
+        as="li"
+        variant="small"
+        color="blue-gray"
+        className="p-1 font-normal"
+      >
+        <Link to={"/"} className="flex items-center">
+          PSH for Business
+        </Link>
+      </Typography>
+      <Typography
+        as="li"
+        variant="small"
+        color="blue-gray"
+        className="p-1 font-normal"
+      >
+        <Link to={"/"} className="flex items-center">
+          Promo
+        </Link>
       </Typography>
     </ul>
   );
@@ -291,13 +314,9 @@ export default function Navmenu() {
   return (
     <Navbar className="py-2  lg:py-4 max-w-full">
       <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
-        <Typography
-          as="a"
-          href="#"
-          className="mr-4 cursor-pointer py-1.5 font-medium"
-        >
-          Material Tailwind
-        </Typography>
+        <Link to={"/"}>
+          <img src={"https://i.ibb.co/GpqY8tQ/PSH-web-logo-1.png"} alt="" />
+        </Link>
         <div className="hidden lg:block">{navList}</div>
         <div className="lg:inline-block">
           <ProfileMenu />
