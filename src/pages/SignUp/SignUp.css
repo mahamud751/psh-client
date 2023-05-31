@@ -5,6 +5,17 @@
     align-items: center;
 }
 
+.card {
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0 solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+}
+
+.signin_text {
+    color: rgb(34, 139, 209);
+}
+
 .registration_img {
     display: flex;
     justify-content: center;

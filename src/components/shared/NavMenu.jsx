@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState, useEffect } from "react";
 import "./Custom.css";
 import {
@@ -27,40 +27,19 @@ import {
   RocketLaunchIcon,
   Bars2Icon,
 } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
-
-const profileMenuItems = [
-  {
-    label: "My Profile",
-    icon: UserCircleIcon,
-    href: "/profile",
-  },
-  {
-    label: "Edit Profile",
-    icon: Cog6ToothIcon,
-    href: "#",
-  },
-  {
-    label: "Inbox",
-    icon: InboxArrowDownIcon,
-    href: "#",
-  },
-  {
-    label: "Help",
-    icon: LifebuoyIcon,
-    href: "#",
-  },
-  {
-    label: "Sign Out",
-    icon: PowerIcon,
-    href: "#",
-  },
-];
+import { Link, NavLink } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthProvider";
 
 function ProfileMenu() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const closeMenu = () => setIsMenuOpen(false);
+  const { user, logOut } = useContext(AuthContext);
 
+  const handleLogOut = () => {
+    logOut()
+      .then(() => {})
+      .catch((err) => console.log(err));
+  };
   return (
     <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
       <MenuHandler>
@@ -91,10 +70,20 @@ function ProfileMenu() {
             className={`flex items-center gap-2 rounded `}
           >
             <Typography as="span" variant="small" className="font-normal">
-              Profile
+              {user.displayName}
             </Typography>
           </MenuItem>
         </Link>
+        <NavLink onClick={handleLogOut}>
+          <MenuItem
+            onClick={closeMenu}
+            className={`flex items-center gap-2 rounded `}
+          >
+            <Typography as="span" variant="small" className="font-normal">
+              Log out
+            </Typography>
+          </MenuItem>
+        </NavLink>
       </MenuList>
     </Menu>
   );
@@ -238,6 +227,7 @@ export default function Navmenu() {
   const [openNav, setOpenNav] = useState(false);
   const [isNavOpen, setIsNavOpen] = React.useState(false);
   const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
+  const { user } = useContext(AuthContext);
 
   React.useEffect(() => {
     window.addEventListener(
@@ -319,10 +309,15 @@ export default function Navmenu() {
         </Link>
         <div className="hidden lg:block">{navList}</div>
         <div className="lg:inline-block">
-          <ProfileMenu />
-          <div className="hidden md:block">
-            <button className="sign_btn">Sign Up/Login</button>
-          </div>
+          {user ? (
+            <ProfileMenu />
+          ) : (
+            <Link to={"/signup"}>
+              <div className="hidden md:block">
+                <button className="sign_btn">Sign Up/Login</button>
+              </div>
+            </Link>
+          )}
         </div>
         <IconButton
           size="sm"

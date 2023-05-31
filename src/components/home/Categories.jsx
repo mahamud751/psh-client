@@ -1,128 +1,135 @@
 import React from "react";
-import { usePathname, useSearchParams } from "next/navigation";
-import { TbBeach, TbMountain, TbPool } from "react-icons/tb";
 import {
-  GiBarn,
-  GiBoatFishing,
-  GiCactus,
-  GiCastle,
-  GiCaveEntrance,
-  GiForestCamp,
-  GiIsland,
-  GiWindmill,
-} from "react-icons/gi";
-import { FaSkiing } from "react-icons/fa";
-import { BsSnow } from "react-icons/bs";
-import { IoDiamond } from "react-icons/io5";
-import { MdOutlineVilla } from "react-icons/md";
-export const categories = [
-  {
-    label: "Beach",
-    icon: TbBeach,
-    description: "This property is close to the beach!",
-  },
-  {
-    label: "Windmills",
-    icon: GiWindmill,
-    description: "This property is has windmills!",
-  },
-  {
-    label: "Modern",
-    icon: MdOutlineVilla,
-    description: "This property is modern!",
-  },
-  {
-    label: "Countryside",
-    icon: TbMountain,
-    description: "This property is in the countryside!",
-  },
-  {
-    label: "Pools",
-    icon: TbPool,
-    description: "This is property has a beautiful pool!",
-  },
-  {
-    label: "Islands",
-    icon: GiIsland,
-    description: "This property is on an island!",
-  },
-  {
-    label: "Lake",
-    icon: GiBoatFishing,
-    description: "This property is near a lake!",
-  },
-  {
-    label: "Skiing",
-    icon: FaSkiing,
-    description: "This property has skiing activies!",
-  },
-  {
-    label: "Castles",
-    icon: GiCastle,
-    description: "This property is an ancient castle!",
-  },
-  {
-    label: "Caves",
-    icon: GiCaveEntrance,
-    description: "This property is in a spooky cave!",
-  },
-  {
-    label: "Camping",
-    icon: GiForestCamp,
-    description: "This property offers camping activities!",
-  },
-  {
-    label: "Arctic",
-    icon: BsSnow,
-    description: "This property is in arctic environment!",
-  },
-  {
-    label: "Desert",
-    icon: GiCactus,
-    description: "This property is in the desert!",
-  },
-  {
-    label: "Barns",
-    icon: GiBarn,
-    description: "This property is in a barn!",
-  },
-  {
-    label: "Lux",
-    icon: IoDiamond,
-    description: "This property is brand new and luxurious!",
-  },
-];
-const Categories = () => {
-  const params = useSearchParams();
-  const category = params?.get("category");
-  const pathname = usePathname();
+  Tabs,
+  TabsHeader,
+  TabsBody,
+  Tab,
+  TabPanel,
+} from "@material-tailwind/react";
+import { Card, CardHeader, CardBody } from "@material-tailwind/react";
+import UseFetch from "../../hooks/useFetch";
 
+export default function Categories() {
+  const [activeTab, setActiveTab] = React.useState("html");
+  const data = [
+    {
+      label: "HTML",
+      value: "html",
+      desc: `It really matters and then like it really doesn't matter.
+      What matters is the people who are sparked by it. And the people 
+      who are like offended by it, it doesn't matter.`,
+    },
+    {
+      label: "React",
+      value: "react",
+      desc: `Because it's about motivating the doers. Because I'm here
+      to follow my dreams and inspire other people to follow their dreams, too.`,
+    },
+    {
+      label: "Vue",
+      value: "vue",
+      desc: `We're not always in the position that we want to be at.
+      We're constantly growing. We're constantly making mistakes. We're
+      constantly trying to express ourselves and actualize our dreams.`,
+    },
+    {
+      label: "Angular",
+      value: "angular",
+      desc: `Because it's about motivating the doers. Because I'm here
+      to follow my dreams and inspire other people to follow their dreams, too.`,
+    },
+    {
+      label: "Svelte",
+      value: "svelte",
+      desc: `We're not always in the position that we want to be at.
+      We're constantly growing. We're constantly making mistakes. We're
+      constantly trying to express ourselves and actualize our dreams.`,
+    },
+  ];
+  const { data2, loading, error, reFetch } = UseFetch(`/hotets`);
+  console.log(data2);
   return (
-    <div>
-      <Container>
-        <div
-          className="
-        lg:px-64
-          pt-4
-          flex 
-          flex-row 
-          items-center 
-          justify-between
-          overflow-x-auto
-        "
-        >
-          {categories.map((item) => (
-            <CategoryBox
-              key={item.label}
-              label={item.label}
-              icon={item.icon}
-              selected={category === item.label}
-            />
-          ))}
-        </div>
-      </Container>
-    </div>
-  );
-};
+    <Tabs value={activeTab}>
+      <TabsHeader
+        className="rounded-none border-b border-blue-gray-50 bg-transparent p-0"
+        indicatorProps={{
+          className:
+            "bg-transparent border-b-2 border-blue-500 shadow-none rounded-none",
+        }}
+      >
+        {data.map(({ label, value }) => (
+          <Tab
+            key={value}
+            value={value}
+            onClick={() => setActiveTab(value)}
+            className={activeTab === value ? "text-blue-500" : ""}
+          >
+            {label}
+          </Tab>
+        ))}
+      </TabsHeader>
+      <TabsBody>
+        {data.map(({ value, desc }) => (
+          <TabPanel key={value} value={value}>
+            <Card className=" overflow-hidden">
+              <CardHeader
+                floated={false}
+                shadow={false}
+                color="transparent"
+                className="m-0 rounded-none"
+              >
+                <span className="note">Only 1 Seat Left</span>
+                <img src={data.imageSrc} alt="ui/ux review check" />
+                {/* <Image
+            fill
+            className="
+              object-cover 
+              h-full 
+              w-full 
+              group-hover:scale-110 
+              transition
+            "
+            src={data.imageSrc}
+            alt="Listing"
+          /> */}
+              </CardHeader>
+              <CardBody className="p-2">
+                <div className="flex justify-between w-full px-3">
+                  <p>Dhanmondi 10</p>
 
-export default Categories;
+                  <div className="flex">
+                    <p>5.0</p>
+                    <div>
+                      <i className="fas fa-star ms-2" />
+                    </div>
+                  </div>
+                </div>
+                <a className="px-3 font-bold text-black">Standard Room</a>
+                <p className="px-3 font-thin w-full text-xs">
+                  Comfortable and affordable option for a relaxing stay
+                </p>
+                <div className="flex justify-between w-full px-3 mt-3">
+                  <div>
+                    <p className="text-sm text-black font-bold">
+                      Per Day : <span className="font-normal"> BDT 300</span>
+                    </p>
+                    <p className="text-sm text-black font-bold">
+                      Per Month : <span className="font-normal"> BDT 6000</span>
+                    </p>
+                    <p className="text-sm text-black font-bold">
+                      Per Year :{" "}
+                      <span className="font-normal"> BDT 80,000</span>
+                    </p>
+                  </div>
+                  <div>
+                    <i className="fa-regular fa-heart mt-7 text-2xl"></i>
+                  </div>
+                </div>
+              </CardBody>
+            </Card>
+          </TabPanel>
+        ))}
+      </TabsBody>
+    </Tabs>
+  );
+}

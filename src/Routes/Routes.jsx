@@ -6,6 +6,7 @@ import Success from "../pages/Success/Success";
 import Profile from "../pages/Profile/Profile";
 import Contact from "../pages/Contact/Contact";
 import About from "../pages/About/About";
+import SignIn from "../pages/SignUp/SignIn";
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
       {
         path: "/about",
         element: <About></About>,
+      },
+      {
+        path: "/signin",
+        element: <SignIn></SignIn>,
       },
       {
         path: "/signup",

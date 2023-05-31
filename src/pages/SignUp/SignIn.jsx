@@ -1,55 +1,45 @@
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthProvider";
 
 import toast from "react-hot-toast";
-import "./SignUp.css";
+
 import useToken from "../../hooks/useToken";
-const SignUp = () => {
+const SignIn = () => {
   const {
     register,
-    handleSubmit,
     formState: { errors },
+    handleSubmit,
   } = useForm();
-  const {
-    createUser,
-    updateUser,
-    signInWithGoogle,
-    signInWithFacebook,
-    verifyEmail,
-  } = useContext(AuthContext);
-  const [signUpError, setSignUPError] = useState("");
-  const [createdUserEmail, setCreatedUserEmail] = useState("");
-  const [token] = useToken(createdUserEmail);
+  const { signIn, signInWithGoogle, signInWithFacebook } =
+    useContext(AuthContext);
+  const [loginError, setLoginError] = useState("");
+  const [loginUserEmail, setLoginUserEmail] = useState("");
+  const [token] = useToken(loginUserEmail);
+  const location = useLocation();
   const navigate = useNavigate();
 
+  const from = location.state?.from?.pathname || "/";
+
   if (token) {
-    navigate("/");
+    navigate(from, { replace: true });
   }
 
-  const handleSignUp = (data) => {
-    setSignUPError("");
-    createUser(data.email, data.password)
+  const handleLogin = (data) => {
+    console.log(data);
+    setLoginError("");
+    signIn(data.email, data.password)
       .then((result) => {
         const user = result.user;
         console.log(user);
-        toast("User Created Successfully.");
-        const userInfo = {
-          displayName: data.name,
-        };
-        updateUser(userInfo)
-          .then(() => {
-            saveUser(data.name, data.email);
-            verifyEmail();
-            navigate("/");
-          })
-          .catch((err) => console.log(err));
+        setLoginUserEmail(data.email);
+        navigate("/");
       })
       .catch((error) => {
-        console.log(error);
-        setSignUPError(error.message);
+        console.log(error.message);
+        setLoginError(error.message);
       });
   };
   const handleGoogleSignIn = () => {
@@ -68,20 +58,6 @@ const SignUp = () => {
         console.log(user);
       })
       .catch((error) => console.error(error));
-  };
-  const saveUser = (name, email, password) => {
-    const user = { name, email, password };
-    fetch("http://localhost:5001/api/users", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(user),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setCreatedUserEmail(email);
-      });
   };
   return (
     <div>
@@ -110,20 +86,9 @@ const SignUp = () => {
                 </div>
                 <form
                   className="infoForm authForm"
-                  onSubmit={handleSubmit(handleSignUp)}
+                  onSubmit={handleSubmit(handleLogin)}
                 >
                   <div className="form">
-                    <input
-                      type="text"
-                      className="infoInput"
-                      placeholder="Name"
-                      {...register("name", {
-                        required: "Name is Required",
-                      })}
-                    />
-                    {errors.name && (
-                      <p className="text-red-500">{errors.name.message}</p>
-                    )}
                     <input
                       type="email"
                       className="infoInput"
@@ -163,7 +128,7 @@ const SignUp = () => {
                       background: `linear-gradient( 109.6deg, rgba(156,252,248,1) 11.2%, rgba(110,123,251,1) 91.1% )`,
                     }}
                   >
-                    Register
+                    Continue
                   </button>
                 </form>
 
@@ -172,13 +137,14 @@ const SignUp = () => {
                     By continuing, you agree to WellSpring Pharmacy Conditions
                     of Use and Privacy Notice.
                   </p>
-                  <div className="d-flex">
-                    <p className="me-2">Already have an account? </p>
-                    <Link to={"/signin"} className="signin_text">
-                      Sign in
-                    </Link>
-                  </div>
+                  <p>New to WellSpring Pharmacy? </p>
                 </div>
+                <Link
+                  to={"/signup"}
+                  className="def-btn btn-gl w-full mt-3 text-center signin_text"
+                >
+                  Register Now
+                </Link>
               </div>
             </div>
           </div>
@@ -188,4 +154,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignIn;

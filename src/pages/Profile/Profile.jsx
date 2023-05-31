@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useContext } from "react";
 import {
   Tabs,
   TabsHeader,
@@ -15,8 +15,10 @@ import {
 import "./profile.css";
 import Booking from "../../components/profile/Booking";
 import Ticket from "../../components/profile/Ticket";
+import { AuthContext } from "../../contexts/AuthProvider";
 
 export default function Profile() {
+  const { user } = useContext(AuthContext);
   const [activeTab, setActiveTab] = React.useState("info");
   const data = [
     {
@@ -59,7 +61,7 @@ export default function Profile() {
             <TabsHeader className="w-60">
               <img src="https://i.ibb.co/jwYHgqz/Rectangle-97.png" alt="" />
               <h2 className="font-bold text-center text-xl uppercase my-2 block mb-0">
-                John Brown
+                {user.displayName}
               </h2>
               <span className="mt-0 text-[#35B0A7] text-center font-bold mb-3">
                 Member Since May 2023
@@ -135,7 +137,7 @@ export default function Profile() {
                     <p>country:</p>
                   </div>
                   <div className="text-start ms-10 right-text">
-                    <p>john wick</p>
+                    <p> {user.displayName}</p>
                     <p>johnwi@mail</p>
                     <p>+88034934934</p>
                     <p>Dhaka, bangladesh</p>
